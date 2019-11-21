@@ -1,0 +1,49 @@
+classdef stego2 < handle
+    
+    properties (Access = public)
+        concealingImage;
+    end
+    properties (Access = private)
+        hiddenImage;
+        flattenedImage;
+    end
+
+    methods 
+       % Constructor
+        function obj = stego2(hidden1,dogImage)
+            % when selecting hiddenImage in GUI, will change hidden#.png
+            % will use some sort of conditional statement (maybe switch)
+            if nargin == 2
+                obj.hiddenImage = imread(hidden1);
+                obj.concealingImage = imread(dogImage);
+                obj.flattenedImage = [];
+            else 
+                obj.hiddenImage = '' ;
+                obj.concealingImage = '' ;
+                obj.flattenedImage = [];
+            end
+        end
+
+        function Flatten(obj) 
+            obj.flattenedImage = imbinarize(obj.hiddenImage) % flattenedImage is a logical array w/ 1's for dark
+            % imbinarize uses a global threshold to determine if pixel is dark   
+        end 
+        
+        function Odd_Even_Red_Embed(obj)  
+            redConcealingImage = obj.concealingImage(:,:,1)
+            for i = 1:100
+                if obj.flattenedImage(i) == 1 & mod(redConcealingImage(i),2) == 0 ;
+                    redConcealingImage(i) = redConcealingImage(i) - 1 ;
+                elseif obj.flattenedImage(i) == 0 & mod(redConcealingImage(i),2) == 1 ;
+                    redConcealingImage(i) = redConcealingImage(i) - 1 ;
+                end
+            end
+            
+        end
+    end
+end
+%{ 
+in commmand window
+stego = stego2('hidden01.png','dogImage.png')
+stego.Flatten()
+%}

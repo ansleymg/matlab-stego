@@ -1,4 +1,4 @@
-classdef stego2 < handle
+classdef stego3 < handle
     
     properties (Access = public)
         concealingImage;
@@ -6,21 +6,27 @@ classdef stego2 < handle
     properties (Access = private)
         hiddenImage;
         flattenedImage;
+        recoveredImage;
+        expandedImage;
     end
 
     methods 
        % Constructor
-        function obj = stego2(hidden1,dogImage)
+        function obj = stego3(hidden1,dogImage)
             % when selecting hiddenImage in GUI, will change hidden#.png
             % will use some sort of conditional statement (maybe switch)
             if nargin == 2
                 obj.hiddenImage = imread(hidden1);
                 obj.concealingImage = imread(dogImage);
                 obj.flattenedImage = [];
+                obj.recoveredImage = [];
+                obj.expandedImage = [];
             else 
                 obj.hiddenImage = '' ;
                 obj.concealingImage = '' ;
                 obj.flattenedImage = [];
+                obj.recoveredImage = [];
+                obj.expandedImage = [];
             end
         end
 
@@ -29,21 +35,49 @@ classdef stego2 < handle
             % imbinarize uses a global threshold to determine if pixel is dark   
         end 
         
+        function Expand(obj)
+            imgSize = size(obj.recoveredImage)
+            obj.expandedImage = zeros(imgSize(1),imgSize(2),3)
+            obj.expandedImage(:,:,1) = obj.recoveredImage*255
+            obj.expandedImage(:,:,2) = obj.recoveredImage*255
+            obj.expandedImage(:,:,3) = obj.recoveredImage*255
+            % imshow(obj.expandedImage)
+        end
+  
         function Odd_Even_Red_Embed(obj)  
             redConcealingImage = obj.concealingImage(:,:,1)
-            for i = 1:100
-                if obj.flattenedImage(i) == 1 & mod(redConcealingImage(i),2) == 0 ;
-                    redConcealingImage(i) = redConcealingImage(i) - 1 ;
-                elseif obj.flattenedImage(i) == 0 & mod(redConcealingImage(i),2) == 1 ;
-                    redConcealingImage(i) = redConcealingImage(i) - 1 ;
+            imgSize = size(obj.flattenedImage)
+            for i = 1:imgSize
+                for j = 1:imgSize
+                    if obj.flattenedImage(i,j) == 1 & mod(redConcealingImage(i,j),2) == 0 ;
+                        redConcealingImage(i,j) = redConcealingImage(i,j) - 1 ;
+                    elseif obj.flattenedImage(i,j) == 0 & mod(redConcealingImage(i,j),2) == 1 ;
+                        redConcealingImage(i,j) = redConcealingImage(i,j) - 1 ;
+                    end
                 end
             end
-            
+        end
+        
+        function Odd_Even_Red_Recover(obj)
+            imgSize = size(obj.flattenedImage)
+            obj.recoveredImage = zeros(imgSize)
+            for i = 1:imgSize
+                for j = 1:imgSize
+                    if mod(obj.concealingImage(i,j,1),2) == 0
+                        obj.recoveredImage(i,j) = 1
+                    elseif mod(obj.concealingImage(i,j,1),2) == 1
+                        obj.recoveredImage(i,j) = 0
+                    end
+                end
+            end
         end
     end
 end
 %{ 
 in commmand window
-stego = stego2('hidden01.png','dogImage.png')
+stego = stego3('hidden01.png','dogImage.png')
 stego.Flatten()
+stego.Odd_Even_Red_Embed() 0.3 sec
+stego.Odd_Even_Red_Recover() 52 sec
+stego.Expand()
 %}

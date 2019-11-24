@@ -36,12 +36,14 @@ classdef stego3 < handle
         end 
         
         function Expand(obj)
-            imgSize = size(obj.recoveredImage)
-            obj.expandedImage = zeros(imgSize(1),imgSize(2),3)
-            obj.expandedImage(:,:,1) = obj.recoveredImage*255
-            obj.expandedImage(:,:,2) = obj.recoveredImage*255
-            obj.expandedImage(:,:,3) = obj.recoveredImage*255
-            % imshow(obj.expandedImage)
+            tic
+            imgSize = size(obj.recoveredImage);
+            obj.expandedImage = zeros(imgSize(1),imgSize(2),3);
+            obj.expandedImage(:,:,1) = obj.recoveredImage*255;
+            obj.expandedImage(:,:,2) = obj.recoveredImage*255;
+            obj.expandedImage(:,:,3) = obj.recoveredImage*255;
+            imshow(obj.expandedImage)
+            toc
         end
   
         function Odd_Even_Red_Embed(obj)  
@@ -59,17 +61,19 @@ classdef stego3 < handle
         end
         
         function Odd_Even_Red_Recover(obj)
-            imgSize = size(obj.flattenedImage)
-            obj.recoveredImage = zeros(imgSize)
+            tic
+            imgSize = size(obj.flattenedImage);
+            obj.recoveredImage = zeros(imgSize);
             for i = 1:imgSize
                 for j = 1:imgSize
                     if mod(obj.concealingImage(i,j,1),2) == 0
-                        obj.recoveredImage(i,j) = 1
+                        obj.recoveredImage(i,j) = 1 ;
                     elseif mod(obj.concealingImage(i,j,1),2) == 1
-                        obj.recoveredImage(i,j) = 0
+                        obj.recoveredImage(i,j) = 0 ;
                     end
                 end
             end
+            toc
         end
     end
 end
@@ -78,6 +82,8 @@ in commmand window
 stego = stego3('hidden01.png','dogImage.png')
 stego.Flatten()
 stego.Odd_Even_Red_Embed() 0.3 sec
-stego.Odd_Even_Red_Recover() 52 sec
-stego.Expand()
+stego.Odd_Even_Red_Recover() .14 sec
+stego.Expand() .3 sec
+or 
+stego = stego3('hidden01.png','dogImage.png'); stego.Flatten(); stego.Odd_Even_Red_Embed(); stego.Odd_Even_Red_Recover(); stego.Expand()
 %}

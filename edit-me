@@ -69,5 +69,441 @@ tic
      
     
             
+            
+            
+            
+            
+            
+            %% app designer temp coding for choosing hidden messages and embedding methods
+            
+              
+    properties (Access = private)
+        hideChoiceOne
+        hideChoiceTwo
+        hideChoiceThree % Description
+    end
+    
+
+    % Callbacks that handle component events
+    methods (Access = private)
+
+        % Value changed function: PickyourfirstmessageDropDown
+        function PickyourfirstmessageDropDownValueChanged(app, event)
+            value = app.PickyourfirstmessageDropDown.Value;
+            switch app.PickyourfirstmessageDropDown.Value
+                case 'Kemper'                              %% ERROR: doesn't allow for Kemper to be chosen first 
+                    hiddenMessage=imread('hidden01.png')   %%% change if original image is titled differently
+                    app.EditField.Value='1'
+                case 'Geidt'
+                    hiddenMessage=imread('hidden02.png')   %%% label hiddenMessage for better classdef
+                    app.EditField.Value='2'
+                case 'Secret'
+                     hiddenMessage=imread('hidden03.png')
+                     app.EditField.Value='3'
+                case 'Helga'
+                     hiddenMessage=imread('hidden04.png')
+                     app.EditField.Value='4'
+                case 'Jemarcus'
+                    hiddenMessage=imread('hidden05.png')
+                    app.EditField.Value='5'
+                case 'Bob'
+                     hiddenMessage=imread('hidden06.png')
+                     app.EditField.Value='6'
+                case 'Hammer'
+                     hiddenMessage=imread('hidden07.png')
+                     app.EditField.Value='7'
+                case 'Lizzard'
+                     hiddenMessage=imread('hidden08.png')
+                     app.EditField.Value='8'
+                case 'Passphrase'
+                     hiddenMessage=imread('hidden09.png')
+                     app.EditField.Value='9'
+                otherwise                                              
+                     hiddenMessage=imread('hidden10.png')
+                     app.EditField.Value='10'
+          
+                     
+                     
+                    
+            end
+            
+            flattenOne=hiddenMessage(:,:,1)           %% flattens chosen image
+            app.hideChoiceOne=imbinarize(flattenOne)      %% logical array of first choice to embed
+            imshow(app.hideChoiceOne)                     %% error msg Undefined function or variable 'hiddenMesssage' when using case 10 for final image and otherwise to display text of choose again
+            
+        end
+
+        % Value changed function: EditField
+        function EditFieldValueChanged(app, event)
+            value = app.EditField.Value;
+            app.EditFieldEditField.Value=55
+            app.EditField.Value=app.EditFieldEditField.Value
+            
+        end
+
+        % Value changed function: PickyoursecondmessageDropDown
+        function PickyoursecondmessageDropDownValueChanged(app, event)
+            value = app.PickyoursecondmessageDropDown.Value;
+              switch app.PickyoursecondmessageDropDown.Value   %% Do we need to use a different title 'hiddenMessage' to differentiate from first switch/case?  
+                case 'Kemper'
+                    hiddenMessage=imread('hidden01.png')   %%% change if original image is titled differently
+                    app.EditField2.Value='1'
+                case 'Geidt'
+                    hiddenMessage=imread('hidden02.png')   %%% label hiddenMessage for better classdef
+                    app.EditField2.Value='2'
+                case 'Secret'
+                     hiddenMessage=imread('hidden03.png')
+                     app.EditField2.Value='3'
+                case 'Helga'
+                     hiddenMessage=imread('hidden04.png')
+                     app.EditField2.Value='4'
+                case 'Jemarcus'
+                    hiddenMessage=imread('hidden05.png')
+                    app.EditField2.Value='5'
+                case 'Bob'
+                     hiddenMessage=imread('hidden06.png')
+                     app.EditField2.Value='6'
+                case 'Hammer'
+                     hiddenMessage=imread('hidden07.png')
+                     app.EditField2.Value='7'
+                case 'Lizzard'
+                     hiddenMessage=imread('hidden08.png')
+                     app.EditField2.Value='8'
+                case 'Passphrase'
+                     hiddenMessage=imread('hidden09.png')
+                     app.EditField2.Value='9'
+                otherwise                                              
+                     hiddenMessage=imread('hidden10.png')
+                     app.EditField2.Value='10'
+          
+                     
+                     
+                    
+            end
+            
+            flattenTwo=hiddenMessage(:,:,1)           %% flattens second chosen image
+            app.hideChoiceTwo=imbinarize(flattenTwo)      %% logical array of first choice to embed
+            imshow(app.hideChoiceTwo)                     %% error msg Undefined function or variable 'hiddenMesssage' when using case 10 for final image and otherwise to display text of choose again
+            
+        end
+
+        % Value changed function: EditField2
+        function EditField2ValueChanged(app, event)
+            value = app.EditField2.Value;
+            
+        end
+
+        % Value changed function: PickyourfinalmessageDropDown
+        function PickyourfinalmessageDropDownValueChanged(app, event)
+            value = app.PickyourfinalmessageDropDown.Value;
+              switch app.PickyourfinalmessageDropDown.Value
+                case 'Kemper'
+                    hiddenMessage=imread('hidden01.png')   %%% change if original image is titled differently
+                    app.EditField3.Value='1'
+                case 'Geidt'
+                    hiddenMessage=imread('hidden02.png')   %%% label hiddenMessage for better classdef
+                    app.EditField3.Value='2'
+                case 'Secret'
+                     hiddenMessage=imread('hidden03.png')
+                     app.EditField3.Value='3'
+                case 'Helga'
+                    hiddenMessage=imread('hidden04.png')
+                     app.EditField3.Value='4'
+                case 'Jemarcus'
+                    hiddenMessage=imread('hidden05.png')
+                    app.EditField3.Value='5'
+                case 'Bob'
+                     app.hiddenMessage=imread('hidden06.png')
+                     app.EditField3.Value='6'
+                case 'Hammer'
+                     hiddenMessage=imread('hidden07.png')
+                     app.EditField3.Value='7'
+                case 'Lizzard'
+                     hiddenMessage=imread('hidden08.png')
+                     app.EditField3.Value='8'
+                case 'Passphrase'
+                     hiddenMessage=imread('hidden09.png')
+                     app.EditField3.Value='9'
+                otherwise                                              
+                     hiddenMessage=imread('hidden10.png')
+                     app.EditField3.Value='10'
+          
+                     
+                     
+                    
+            end
+            
+            flattenThree=hiddenMessage(:,:,1)           %% flattens chosen image
+            app.hideChoiceThree=imbinarize(flattenThree)      %% logical array of first choice to embed
+            imshow(app.hideChoiceThree)                     %% error msg Undefined function or variable 'hiddenMesssage' when using case 10 for final image and otherwise to display text of choose again
+            
+        end
+
+        % Value changed function: EditField3
+        function EditField3ValueChanged(app, event)
+            value = app.EditField3.Value;
+            
+        end
+
+        % Value changed function: BloodLayerEmbeddingDropDown
+        function BloodLayerEmbeddingDropDownValueChanged(app, event)
+           dogSmirk=imread('dogImage.png');            %% place in private method/properties
+            imshow(dogSmirk)
+            reddogSmirk=dogSmirk(:,:,1); 
+            resetreddog=zeros(400,400)
+            %choice=imread('hidden08.png');            %% using temporarily until hiddenmessage choice linked
+            %choiceOne=choice(:,:,1);
+            %hideChoiceOne=imbinarize(choiceOne);
+            
+        value = app.BloodLayerEmbeddingDropDown.Value;
+        
+        
+            switch app.BloodLayerEmbeddingDropDown.Value
+                case 'Odd/Even'
+                    
+         
+                for i=1:numel(resetreddog) %% or numel(binTwo)
+     
+  
+                    if (app.hideChoiceOne(i)==0) %% hidden pixel is white   %% ERROR: undefined function hideChoiceOne
+         
+                    if (mod(reddogSmirk(i),2)==0) %% dog pixel is even
+                    resetreddog(i)=reddogSmirk(i)+0; %% keep dog pixel even
+                    else resetreddog(i)=reddogSmirk(i)+1; %% set dog pixel to even
+                    end
+    
+                    elseif (app.hideChoiceOne(i)==1) %% hidden pixel is black
+             if (mod(reddogSmirk(i),2)==0) %% dog pixel is even
+                resetreddog(i)=reddogSmirk(i)+1; %% set dog pixel odd
+         else resetreddog(i)=reddogSmirk(i)+0; %% keep dog pixel odd    
+        
+                            end
+                        end
+                    end
+                    app.EditField4.Value='21'
+                    
+                    
+                case 'DivideThree'                         %% change code to correct embed method
+                     for i=1:numel(resetreddog) %% or numel(binTwo)
+     
+  
+                    if (app.hideChoiceOne(i)==0) %% hidden pixel is white   %% ERROR: undefined function hideChoiceOne
+         
+                    if (mod(reddogSmirk(i),2)==0) %% dog pixel is even
+                    resetreddog(i)=reddogSmirk(i)+0; %% keep dog pixel even
+                    else resetreddog(i)=reddogSmirk(i)+1; %% set dog pixel to even
+                    end
+    
+                    elseif (app.hideChoiceOne(i)==1) %% hidden pixel is black
+             if (mod(reddogSmirk(i),2)==0) %% dog pixel is even
+                resetreddog(i)=reddogSmirk(i)+1; %% set dog pixel odd
+         else resetreddog(i)=reddogSmirk(i)+0; %% keep dog pixel odd    
+        
+                            end
+                        end
+                    end
+                    app.EditField4.Value='22'
+                    
+                case 'AddFive'                               %% change code to correct embed method
+                     for i=1:numel(resetreddog) %% or numel(binTwo)
+     
+  
+                    if (app.hideChoiceOne(i)==0) %% hidden pixel is white   %% ERROR: undefined function hideChoiceOne
+         
+                    if (mod(reddogSmirk(i),2)==0) %% dog pixel is even
+                    resetreddog(i)=reddogSmirk(i)+0; %% keep dog pixel even
+                    else resetreddog(i)=reddogSmirk(i)+1; %% set dog pixel to even
+                    end
+    
+                    elseif (app.hideChoiceOne(i)==1) %% hidden pixel is black
+             if (mod(reddogSmirk(i),2)==0) %% dog pixel is even
+                resetreddog(i)=reddogSmirk(i)+1; %% set dog pixel odd
+         else resetreddog(i)=reddogSmirk(i)+0; %% keep dog pixel odd    
+        
+                            end
+                        end
+                    end
+                    app.EditField4.Value='23'
+            end
+        end
+
+        % Value changed function: SkyLayerEmbeddingDropDown
+        function SkyLayerEmbeddingDropDownValueChanged(app, event)
+            value = app.SkyLayerEmbeddingDropDown.Value;
+              dogSmirk=imread('dogImage.png');            %% place in private method/properties
+            imshow(dogSmirk)
+            reddogSmirk=dogSmirk(:,:,1); 
+            resetreddog=zeros(400,400)
+            
+        value = app.SkyLayerEmbeddingDropDown.Value;
+        
+        
+            switch app.SkyLayerEmbeddingDropDown.Value
+                case 'Odd/Even'
+                    
+         
+                for i=1:numel(resetreddog) %% or numel(binTwo)
+     
+  
+                    if (app.hideChoiceTwo(i)==0) %% hidden pixel is white   %% ERROR: undefined function hideChoiceOne
+         
+                    if (mod(reddogSmirk(i),2)==0) %% dog pixel is even
+                    resetreddog(i)=reddogSmirk(i)+0; %% keep dog pixel even
+                    else resetreddog(i)=reddogSmirk(i)+1; %% set dog pixel to even
+                    end
+    
+                    elseif (app.hideChoiceTwo(i)==1) %% hidden pixel is black
+             if (mod(reddogSmirk(i),2)==0) %% dog pixel is even
+                resetreddog(i)=reddogSmirk(i)+1; %% set dog pixel odd
+         else resetreddog(i)=reddogSmirk(i)+0; %% keep dog pixel odd    
+        
+                            end
+                        end
+                    end
+                    app.EditField5.Value='21'
+                    
+                    
+                case 'DivideThree'                         %% change code to correct embed method
+                     for i=1:numel(resetreddog) %% or numel(binTwo)
+     
+  
+                    if (app.hideChoiceTwo(i)==0) %% hidden pixel is white   %% ERROR: undefined function hideChoiceOne
+         
+                    if (mod(reddogSmirk(i),2)==0) %% dog pixel is even
+                    resetreddog(i)=reddogSmirk(i)+0; %% keep dog pixel even
+                    else resetreddog(i)=reddogSmirk(i)+1; %% set dog pixel to even
+                    end
+    
+                    elseif (app.hideChoiceTwo(i)==1) %% hidden pixel is black
+             if (mod(reddogSmirk(i),2)==0) %% dog pixel is even
+                resetreddog(i)=reddogSmirk(i)+1; %% set dog pixel odd
+         else resetreddog(i)=reddogSmirk(i)+0; %% keep dog pixel odd    
+        
+                            end
+                        end
+                    end
+                    app.EditField5.Value='22'
+                    
+                case 'AddFive'                               %% change code to correct embed method
+                     for i=1:numel(resetreddog) %% or numel(binTwo)
+     
+  
+                    if (app.hideChoiceTwo(i)==0) %% hidden pixel is white   %% ERROR: undefined function hideChoiceOne
+         
+                    if (mod(reddogSmirk(i),2)==0) %% dog pixel is even
+                    resetreddog(i)=reddogSmirk(i)+0; %% keep dog pixel even
+                    else resetreddog(i)=reddogSmirk(i)+1; %% set dog pixel to even
+                    end
+    
+                    elseif (app.hideChoiceTwo(i)==1) %% hidden pixel is black
+             if (mod(reddogSmirk(i),2)==0) %% dog pixel is even
+                resetreddog(i)=reddogSmirk(i)+1; %% set dog pixel odd
+         else resetreddog(i)=reddogSmirk(i)+0; %% keep dog pixel odd    
+        
+                            end
+                        end
+                    end
+                    app.EditField5.Value='23'
+            end
+        end
+
+        % Value changed function: EditField4
+        function EditField4ValueChanged(app, event)
+            value = app.EditField4.Value;
+            
+        end
+
+        % Value changed function: EditField5
+        function EditField5ValueChanged(app, event)
+            value = app.EditField5.Value;
+            
+        end
+
+        % Value changed function: EditField6
+        function EditField6ValueChanged(app, event)
+            value = app.EditField6.Value;
+            
+        end
+
+        % Value changed function: MartianGreenEmbeddingDropDown
+        function MartianGreenEmbeddingDropDownValueChanged(app, event)
+            value = app.MartianGreenEmbeddingDropDown.Value;
+            
+            
+              dogSmirk=imread('dogImage.png');            %% place in private method/properties
+            imshow(dogSmirk)
+            reddogSmirk=dogSmirk(:,:,1); 
+            resetreddog=zeros(400,400)
+            
+        value = app.MartianGreenEmbeddingDropDown.Value;
+        
+        
+            switch app.MartianGreenEmbeddingDropDown.Value
+                case 'Odd/Even'
+                    
+         
+                for i=1:numel(resetreddog) %% or numel(binTwo)
+     
+  
+                    if (app.hideChoiceThree(i)==0) %% hidden pixel is white   %% ERROR: undefined function hideChoiceOne
+         
+                    if (mod(reddogSmirk(i),2)==0) %% dog pixel is even
+                    resetreddog(i)=reddogSmirk(i)+0; %% keep dog pixel even
+                    else resetreddog(i)=reddogSmirk(i)+1; %% set dog pixel to even
+                    end
+    
+                    elseif (app.hideChoiceThree(i)==1) %% hidden pixel is black
+             if (mod(reddogSmirk(i),2)==0) %% dog pixel is even
+                resetreddog(i)=reddogSmirk(i)+1; %% set dog pixel odd
+         else resetreddog(i)=reddogSmirk(i)+0; %% keep dog pixel odd    
+        
+                            end
+                        end
+                    end
+                    app.EditField6.Value='21'
+                    
+                    
+                case 'DivideThree'                         %% change code to correct embed method
+                     for i=1:numel(resetreddog) %% or numel(binTwo)
+     
+  
+                    if (app.hideChoiceThree(i)==0) %% hidden pixel is white   %% ERROR: undefined function hideChoiceOne
+         
+                    if (mod(reddogSmirk(i),2)==0) %% dog pixel is even
+                    resetreddog(i)=reddogSmirk(i)+0; %% keep dog pixel even
+                    else resetreddog(i)=reddogSmirk(i)+1; %% set dog pixel to even
+                    end
+    
+                    elseif (app.hideChoiceThree(i)==1) %% hidden pixel is black
+             if (mod(reddogSmirk(i),2)==0) %% dog pixel is even
+                resetreddog(i)=reddogSmirk(i)+1; %% set dog pixel odd
+         else resetreddog(i)=reddogSmirk(i)+0; %% keep dog pixel odd    
+        
+                            end
+                        end
+                    end
+                    app.EditField6.Value='22'
+                    
+                case 'AddFive'                               %% change code to correct embed method
+                     for i=1:numel(resetreddog) %% or numel(binTwo)
+     
+  
+                    if (app.hideChoiceThree(i)==0) %% hidden pixel is white   %% ERROR: undefined function hideChoiceOne
+         
+                    if (mod(reddogSmirk(i),2)==0) %% dog pixel is even
+                    resetreddog(i)=reddogSmirk(i)+0; %% keep dog pixel even
+                    else resetreddog(i)=reddogSmirk(i)+1; %% set dog pixel to even
+                    end
+    
+                    elseif (app.hideChoiceThree(i)==1) %% hidden pixel is black
+             if (mod(reddogSmirk(i),2)==0) %% dog pixel is even
+                resetreddog(i)=reddogSmirk(i)+1; %% set dog pixel odd
+         else resetreddog(i)=reddogSmirk(i)+0; %% keep dog pixel odd    
+        
+                            end
+                        end
+                    end
+                    app.EditField6.Value='23'
+            end
      
      

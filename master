@@ -28,12 +28,12 @@ classdef stego3 < handle
             end
         end
 
-    function flatten(app) 
+        function flatten(app) 
             app.flattenedImage = imbinarize(app.hiddenImage) % flattenedImage is a logical array w/ 1's for dark
-            % imbinarize uses a global threshold to determine if pixel is dark   
-        end
-  
-    function odd_Even_Red_Embed(app)
+                % imbinarize uses a global threshold to determine if pixel is dark   
+            end
+
+        function odd_Even_Red_Embed(app)
             newRedLayer = app.concealingImage(:,:,1)
             flatImg = app.flattenedImage
             imgLength = length(flatImg)
@@ -41,7 +41,7 @@ classdef stego3 < handle
                 for j = 1:imgLength
                     if xor(flatImg(i,j) == 1, mod(newRedLayer(i,j),2) == 0) ; % checks if pixel is black and concealingImage red pixel has even value 
                         newRedLayer(i,j) = newRedLayer(i,j) - 1 ; % changes concealingImage red pixel to odd value
-                    elseif xor(flatImg(i,j) == 0, mod(dogData(i,j),2) == 1) ; % checks if pixel is white and concealingImage red pixel has odd value
+                    elseif xor(flatImg(i,j) == 0, mod(newRedLayer(i,j),2) == 1) ; % checks if pixel is white and concealingImage red pixel has odd value
                         newRedLayer(i,j) = newRedLayer(i,j) - 1 ; % changes concealingImage red pixel to even value
                     end
                 end
@@ -49,57 +49,77 @@ classdef stego3 < handle
             app.concealingImage(:,:,1) = newRedLayer
         end
         
+        
         function odd_Even_Red_Recover(app)
             imgLength = size(app.flattenedImage);
             app.recoveredImage = zeros(imgLength);
             for i = 1:imgLength
                 for j = 1:imgLength
                     if mod(app.concealingImage(i,j,1),2) == 0 % if concealing img red pixel is even
-                        app.recoveredImage(i,j) = 0 ; % white pixel 
-                    elseif mod(app.concealingImage(i,j,1),2) == 1 % if concealing img red pixel is odd
-                        app.recoveredImage(i,j) = 1 ; % black pixel
-                    end
-                end
-            end
-        end 
-        
-        function red_Avg_Embed(app) 
-            flatImg = app.flattenedImage;
-            imgLength = length(flatImg);
-            newRedLayer = app.concealingImage(:,:,1);
-            if mod(newRedLayer,2) == 1  % if color value is odd (aka if LSB is 1)
-                newRedLayer = newRedLayer - 1; % change to odd (aka change last bit to 0)
-            end
-            avgPixelValue = sum(newRedLayer)/numel(newRedLayer); % find avg value of color channel using the 1st 7 digits 
-            for i = 1:imgLength
-                for j = 1:imgLength
-                    if xor(flatImg(i,j) == 1, newRedLayer(i,j) >= avgPixelValue) % if pixel is black and concealing img pixel value >= avg for red color channel
-                        newRedLayer = newRedLayer + 1; % last digit in binary array set to 1 (color value made odd)
-                    elseif xor(flatImg(i,j) == 0, newRedLayer < avgPixelValue) % if pixel is white and concealing img pixel value < avg for red color channel
-                        newRedLayer = newRedLayer + 1; % last digit in binary array set to 1
-                    end
-                end
-            end
-        end
-        
-        function red_Avg_Recover(app)
-            imgLength = length(app.flattenedImage);
-            newRedLayer = app.concealingImage(:,:,1);
-            if mod(newRedLayer,2) == 1  % if color value is odd (aka if LSB is 1)
-                newRedLayer = newRedLayer - 1; % change to odd (aka change last bit to 0)
-            end
-            avgPixelValue = sum(newRedLayer)/numel(newRedLayer);
-            app.recoveredImage = zeros(imgLength);
-            for i = 1:imgLength
-                for j = 1:imgLength
-                    if newRedLayer >= avgPixelValue & mod(newRedLayer,2) == 1 
                         app.recoveredImage(i,j) = 1 ; % black pixel 
-                    elseif newRedLayer < avgPixelValue & mod(newRedLayer,2) == 1
+                    elseif mod(app.concealingImage(i,j,1),2) == 1 % if concealing img red pixel is odd
                         app.recoveredImage(i,j) = 0 ; % white pixel
                     end
                 end
             end
         end 
+        
+        
+        function avg_Red_Embed(app) 
+            flatImg = app.flattenedImage;
+            imgLength = length(flatImg);
+            newRedLayer = app.concealingImage(:,:,1);
+            for i = 1:imgLength
+                for j = 1:imgLength
+                    if mod(newRedLayer(i,j),2) == 1  % if color value is odd (aka if LSB is 1)
+                        newRedLayer(i,j) = newRedLayer(i,j) - 1; % change to odd (aka change last bit to 0)
+                    end
+                end
+            end
+            avgPixelValue = sum(newRedLayer)/numel(newRedLayer); % find avg value of color channel using the 1st 7 digits 
+            for i = 1:imgLength
+                for j = 1:imgLength
+                    if (flatImg(i,j) == 1) & (newRedLayer(i,j) >= avgPixelValue) % if pixel is black and concealing img pixel value >= avg for red color channel
+                        newRedLayer(i,j) = newRedLayer(i,j) + 1; % last digit in binary array set to 1 (color value made odd)
+                    elseif (flatImg(i,j) == 0) & (newRedLayer < avgPixelValue) % if pixel is white and concealing img pixel value < avg for red color channel
+                        newRedLayer(i,j) = newRedLayer(i,j) + 1; % last digit in binary array set to 1
+                    end
+                end
+            end
+            app.concealingImage(:,:,1) = newRedLayer;
+        end
+        
+        
+        function avg_Red_Recover(app)
+            imgLength = length(app.flattenedImage);
+            newRedLayer = app.concealingImage(:,:,1);
+            redLayer = newRedLayer; % to get same avgPixelValue as embed funtion w/o throwing out hiddenImg data
+            
+            for i = 1:imgLength
+                for j = 1:imgLength
+                    if mod(redLayer(i,j),2) == 1  % if color value is odd (aka if LSB is 1)
+                        redLayer(i,j) = redLayer(i,j) - 1; % change to odd (aka change last bit to 0)
+                    end
+                end
+            end
+            
+            avgPixelValue = sum(redLayer)/numel(redLayer);
+            app.recoveredImage = zeros(imgLength);
+            for i = 1:imgLength
+                for j = 1:imgLength
+                    if (newRedLayer(i,j) < avgPixelValue) & (mod(newRedLayer(i,j),2) == 1) 
+                        app.recoveredImage(i,j) = 0 ; % white pixel 
+                    elseif (newRedLayer(i,j) >= avgPixelValue) & (mod(newRedLayer(i,j),2) == 0) 
+                        app.recoveredImage(i,j) = 0 ; % white pixel 
+                    elseif (newRedLayer(i,j) < avgPixelValue) & (mod(newRedLayer(i,j),2) == 0) 
+                        app.recoveredImage(i,j) = 1 ; % black pixel 
+                    elseif (newRedLayer(i,j) >= avgPixelValue) & (mod(newRedLayer(i,j),2) == 1)
+                        app.recoveredImage(i,j) = 1 ; % black pixel
+                    end
+                end
+            end
+        end 
+   
         
         function expand(app)
             imgSize = size(app.recoveredImage)
@@ -113,9 +133,7 @@ classdef stego3 < handle
     end
 end
 %{ 
-in commmand window
-to test odd/even
+in commmand window 
 stego = stego3('hidden01.png','dogImage.png'); stego.flatten(); stego.odd_Even_Red_Embed(); stego.odd_Even_Red_Recover(); stego.expand()
-stego = stego3('hidden01.png','dogImage.png'); stego.flatten(); stego.red_Avg_Embed(); stego.red_Avg_Recover(); stego.expand()
-
+stego = stego3('hidden01.png','dogImage.png'); stego.flatten(); stego.avg_Red_Embed(); stego.avg_Red_Recover(); stego.expand()
 %}
